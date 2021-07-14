@@ -18,7 +18,7 @@ module.exports = {
       },
       {
         title: 'v1.4',
-        path: 'https://github.com/AdobeDocs/uxp-photoshop'
+        path: 'https://github.com/AdobeDocs/search-test'
       }
     ],*/
     pages: [
@@ -224,5 +224,5 @@ module.exports = {
     ],
   },
   plugins: [`@adobe/gatsby-theme-aio`],
-  pathPrefix: process.env.PATH_PREFIX || "/photoshop/uxp/",
+  pathPrefix: process.env.PATH_PREFIX || "/search-test/",
 };
