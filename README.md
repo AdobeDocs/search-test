@@ -1,4 +1,4 @@
-# UXP-Photoshop
+# Staging Site for UXP-Photoshop
 
 This is a Gatsby site template built with [Adobe I/O Gatsby Theme](https://github.com/adobe/gatsby-theme-aio).
 
