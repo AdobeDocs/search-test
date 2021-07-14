@@ -1,5 +1,4 @@
 ---
-<<<<<<< HEAD
 title: Getting Started—UXP for Adobe Photoshop
 description: Get started building your Photoshop plugin with the UXP Plugin API.
 contributors:
@@ -8,7 +7,7 @@ contributors:
 
 # Getting Started with UXP for Photoshop
 ## Welcome!
-Welcome to the world of Adobe Photoshop and UXP (**U**nified **E**tensibility **P**latform)! UXP is the modern way to create plugins for Adobe Creative Cloud products, including Photoshop. 
+Welcome to the world of Adobe Photoshop and UXP (**U**nified **E**tensibility **P**latform)! UXP is the modern way to create plugins for Adobe Creative Cloud products, including Photoshop.
 
 There are a great many things you can do with UXP plugins to extend and enhance Photoshop, to integrate Photoshop with other services (either internal or on the Internet), and to automate workflows that would otherwise require tedious manual effort by a Photoshop user.
 
@@ -58,7 +57,7 @@ Since UXP is a cross-application cross-platform technology, its API documentatio
 
 Independent of the host application API, UXP provides features of its own, including:
 
-* File access - UXP can read and write files and folders in the user's filesystem. File accesses outside of the plugin's root folder, the plugin's data folder, and a plugin temporary folder require the user's permission. File I/O is discussed [here](./uxp_guide/uxp-misc/file-access/). 
+* File access - UXP can read and write files and folders in the user's filesystem. File accesses outside of the plugin's root folder, the plugin's data folder, and a plugin temporary folder require the user's permission. File I/O is discussed [here](./uxp_guide/uxp-misc/file-access/).
 
 * Network access - UXP supports XMLHttpRequest, WebSockets, and Fetch APIs. Network access is discussed [here](./uxp_guide/uxp-misc/network-io/).
 
@@ -77,36 +76,3 @@ If you're writing a panel-based plugin, you have access to the flyout menu (show
 ## Setting Up for UXP Development
 
 The first thing you'll want to do to start developing UXP plugins is to understand the development toolchain. [This page](./uxp_guide/uxp-toolchain/) explains describes the tools you'll need..
-=======
-title: Guides - Adobe Analytics
-description: This is the guides overview page of Adobe Analytics 
----
-
-# Get Started
-
-To get started with Analytics 2.0 APIs you must first decide whether your application will need
-an OAuth client or a JWT client.
-
-## Authentication
-
-There are multiple type of authentication for authenticating with the analytics APIs. General information
-about authenticating with Adobe's APIs is located here. Specific information related to authenticating
-with the analytics APIs is available in the sections below
-
-## OAuth
-
-Use an OAuth client if you are creating an application that requires an end use to authenticate before
-calling the Adobe Analytics APIs. The OAuth tokens expire after 24 hours and the end user must then
-re-authenticate before they will be able to call the APIs. To authenticate with an OAuth client, you first
-create an OAuth client on the [Adobe I/O Console](https://console.adobe.io).
-
-<InlineAlert variant="info" slots="text"/>
-
-The refresh token grant type is automatically added to OAuth clients created after September 18, 2019
-
-## JWT
-
-A JWT client is best if you are creating an application that needs to programmatically authenticate calls to 
-the Adobe Analytics APIs. A new JWT token can be generated whenever the old one is about to expire so your application
-can continue to make API calls.  
->>>>>>> bff822cc (Initial commit)
