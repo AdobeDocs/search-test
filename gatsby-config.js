@@ -12,15 +12,8 @@
 
 module.exports = {
   siteMetadata: {
-    /*versions: [
-      {
-        title: 'v4.1'
-      },
-      {
-        title: 'v1.4',
-        path: 'https://github.com/AdobeDocs/search-test'
-      }
-    ],*/
+    title: "UXP for Adobe Photoshop",
+    description: "UXP (Unified Extensibility Platform) lets you build plugins for Photoshop and other Creative Cloud apps. Automate workflows, build new features, and connect to other software and services—all with HTML, CSS, and JavaScript.",
     pages: [
       {
         title: "UXP for Adobe Photoshop",
