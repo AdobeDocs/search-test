@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "uxp-photoshop-documentation",
+  "name": "search-test",
   "version": "0.1.6",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AdobeDocs/uxp-photoshop"
+    "url": "https://github.com/AdobeDocs/search-test"
   },
   "dependencies": {
     "@adobe/gatsby-theme-aio": "file:.yalc/@adobe/gatsby-theme-aio",

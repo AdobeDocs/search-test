@@ -3,7 +3,7 @@
   "packages": {
     "@adobe/gatsby-theme-aio": {
       "version": "3.14.3",
-      "signature": "e6746f33930f76ef6ef4a336580ed6af",
+      "signature": "d48c554ebc9e63c7424e96c60475eed9",
       "file": true,
       "replaced": "^3.14.3"
     }
