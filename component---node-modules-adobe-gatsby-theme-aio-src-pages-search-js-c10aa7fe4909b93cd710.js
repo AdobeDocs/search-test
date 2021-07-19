@@ -1,2 +1,0 @@
-(self.webpackChunksearch_test=self.webpackChunksearch_test||[]).push([[9028],{85806:function(e,n,t){"use strict";t.r(n),t.d(n,{default:function(){return l}});t(15007);var r=t(4902),s=t(802);var c={name:"141rnps",styles:"display:flex;align-items:center;justify-content:center;flex-direction:column;min-height:200px"},u=function(){return(0,s.tZ)("div",{css:c},(0,s.tZ)(r.nL,null,"Hello, Search Page"))};function l(){return(0,s.tZ)(u,null)}}}]);
-//# sourceMappingURL=component---node-modules-adobe-gatsby-theme-aio-src-pages-search-js-c10aa7fe4909b93cd710.js.map
