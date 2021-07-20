@@ -33,6 +33,9 @@ if (!ALGOLIA_INDEXING_MODES[algoliaIndexingMode]) {
 console.info(`Algolia: using indexing mode ${algoliaIndexingMode}`);
 
 module.exports = {
+  siteMetadata: {
+    searchIndex: process.env.ALGOLIA_INDEX_NAME || process.env.REPO_NAME
+  },
   plugins: [
     `gatsby-plugin-preact`,
     `gatsby-plugin-react-helmet`,
@@ -117,16 +120,14 @@ module.exports = {
         appId: process.env.ALGOLIA_APP_ID,
         apiKey: process.env.ALGOLIA_WRITE_API_KEY,
         // for all queries
-        indexName: process.env.ALGOLIA_INDEX_NAME_SUFFIX
-          ? `${process.env.REPO_NAME}${process.env.ALGOLIA_INDEX_NAME_SUFFIX}`
-          : process.env.REPO_NAME,
+        indexName: process.env.ALGOLIA_INDEX_NAME || process.env.REPO_NAME,
         queries: algoliaQueries,
         chunkSize: 1000, // default: 1000
         settings: {
           // optional, any index settings
           // Note: by supplying settings, you will overwrite all existing settings on the index
         },
-        enablePartialUpdates: false, // default: false
+        enablePartialUpdates: true, // default: false
         matchFields: ['slug', 'modified'], // Array<String> default: ['modified']
         concurrentQueries: false, // default: true
         skipIndexing: ALGOLIA_INDEXING_MODES[algoliaIndexingMode][0], // default: true
