@@ -115,10 +115,7 @@ const SearchIndexes = () => (
         </TabsItemLabel>
       </TabsItem>
       <TabsItem>
-        <TabsItemLabel>Illustrator</TabsItemLabel>
-      </TabsItem>
-      <TabsItem>
-        <TabsItemLabel>InDesign</TabsItemLabel>
+        <TabsItemLabel>Area for index tabs</TabsItemLabel>
       </TabsItem>
     </Tabs>
   </section>
