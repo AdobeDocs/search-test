@@ -3,9 +3,8 @@
   "packages": {
     "@adobe/gatsby-theme-aio": {
       "version": "3.14.3",
-      "signature": "5e14a0d97fe81e810ed10eedf935d9a8",
-      "file": true,
-      "replaced": "^3.14.3"
+      "signature": "9107a5536b595e0b35be9a654927d952",
+      "file": true
     }
   }
 }
