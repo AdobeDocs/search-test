@@ -34,7 +34,7 @@ console.info(`Algolia: using indexing mode ${algoliaIndexingMode}`);
 
 module.exports = {
   siteMetadata: {
-    searchIndex: process.env.ALGOLIA_INDEX_NAME || process.env.REPO_NAME,
+    searchIndex: process.env.ALGOLIA_INDEX_NAME || process.env.REPO_NAME
   },
   plugins: [
     `gatsby-plugin-preact`,
@@ -128,7 +128,7 @@ module.exports = {
           // Note: by supplying settings, you will overwrite all existing settings on the index
         },
         enablePartialUpdates: true, // default: false
-        matchFields: ['slug', 'modified'], // Array<String> default: ['modified']
+        matchFields: ['slug', 'cTimeMs'], // Array<String> default: ['modified']
         concurrentQueries: false, // default: true
         skipIndexing: ALGOLIA_INDEXING_MODES[algoliaIndexingMode][0], // default: true
         dryRun: ALGOLIA_INDEXING_MODES[algoliaIndexingMode][1], // default: false

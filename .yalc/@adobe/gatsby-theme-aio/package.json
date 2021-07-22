@@ -109,10 +109,11 @@
     "qs": "^6.10.1",
     "react": "^17.0.0",
     "react-autosuggest": "10.1.0",
-    "react-dom": "^17.0.2",
+    "react-dom": "^17.0.0",
     "react-helmet": "^6.1.0",
     "react-id-generator": "^3.0.1",
     "react-instantsearch-dom": "6.12.0",
+    "react-modal": "^3.14.3",
     "react-scripts": "4.0.3",
     "redoc": "2.0.0-rc.38",
     "rehype-slug": "^4.0.1",
@@ -124,5 +125,5 @@
     "unist-util-select": "2.0.0",
     "uuid": "^8.3.2"
   },
-  "yalcSig": "9107a5536b595e0b35be9a654927d952"
+  "yalcSig": "0c070247063f090af05bbd73331e97fb"
 }
