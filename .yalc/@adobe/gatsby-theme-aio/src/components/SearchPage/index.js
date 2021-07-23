@@ -80,7 +80,7 @@ export const SearchPage = (props) => {
 
   return (
     <InstantSearch
-      indexName="uxp-photoshop"
+      indexName="search-test"
       searchClient={searchClient}
       searchState={props.searchState}
       createURL={props.createURL}
@@ -90,7 +90,7 @@ export const SearchPage = (props) => {
         snippetEllipsisText="…"
         removeWordsIfNoResults="allOptional"
       />
-      <Index indexName="uxp-photoshop" />
+      <Index indexName="search-test" />
       <SearchHeader />
       <div className="search-results-main">
         <SearchIndexes />
@@ -116,7 +116,7 @@ const SearchHeader = () => (
         openOnFocus={true}
         getSources={({ query }) => [
           {
-            sourceId: 'photoshop',
+            sourceId: 'search-test',
             getItemUrl({ item }) {
               return item.url;
             },
@@ -125,7 +125,7 @@ const SearchHeader = () => (
                 searchClient,
                 queries: [
                   {
-                    indexName: 'photoshop',
+                    indexName: 'search-test',
                     query,
                     params: {
                       hitsPerPage: 5
