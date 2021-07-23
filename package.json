@@ -12,7 +12,7 @@
     "gatsby": "^3.6.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
-    "uxp-documentation": "github:adobedocs/uxp"
+    "uxp-documentation": "https://github.com/AdobeDocs/uxp"
   },
   "scripts": {
     "start": "gatsby build && gatsby serve",
