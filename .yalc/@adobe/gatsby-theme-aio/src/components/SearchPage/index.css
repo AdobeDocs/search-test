@@ -36,6 +36,8 @@ mark {
 .ais-SearchBox {
   display: flex;
   width: 100%;
+  height: 50px;
+  width: 400px;
 }
 
 .ais-HitsPerPage {

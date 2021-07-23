@@ -18,7 +18,7 @@ import '@spectrum-css/search';
 import '@spectrum-css/button';
 import { Magnify, Cross } from '../Icons';
 
-export const SearchField = ({ className, onClear, onChange, onSubmit }) => {
+export const AutoComplete = ({ className, onClear, onChange, onSubmit }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showClear, setShowClear] = useState(false);
 
