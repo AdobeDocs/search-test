@@ -61,6 +61,11 @@ exports.createSchemaCustomization = ({ actions }) => {
       hidden: Boolean
     }
 
+    type Site {
+      host: String
+      port: String
+    }
+
     type SiteSiteMetadata {
       home: Home
       pages: [TopPage]

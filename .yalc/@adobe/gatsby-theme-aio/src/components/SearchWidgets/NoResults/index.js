@@ -1,6 +1,10 @@
 import React from 'react';
 import { connectStateResults, ClearRefinements } from 'react-instantsearch-dom';
 
+// TODO: Remove these stylesheets when styling everything with Spectrum
+import 'instantsearch.css/themes/satellite.css';
+import '../../SearchPage/index.css';
+
 const NoResults = ({ searchResults }) => {
   if (!searchResults || searchResults.nbHits > 0) {
     return null;
@@ -8,6 +12,8 @@ const NoResults = ({ searchResults }) => {
 
   const hasRefinements = searchResults.getRefinements().length > 0;
   const description = hasRefinements ? 'Try to reset your applied filters.' : 'Please try another query.';
+
+  // TODO: Use https://opensource.adobe.com/spectrum-css/illustratedmessage.html but incorporate the ClearRefinements component below.
 
   return (
     <div className="hits-empty-state">

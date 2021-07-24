@@ -11,12 +11,10 @@
  */
 
 import { useContext } from 'react';
-import { getAlgoliaResults } from '@algolia/autocomplete-js';
 import algoliasearch from 'algoliasearch/lite';
 
 import { Tabs, Item as TabsItem, Label as TabsItemLabel } from '../Tabs';
 import Context from '../Context';
-import SearchResult from './SearchResult';
 
 import {
   InstantSearch,
@@ -26,40 +24,41 @@ import {
   Highlight,
   Snippet,
   RefinementList,
-  HitsPerPage,
   Stats,
   Pagination,
   ClearRefinements,
   Configure
 } from 'react-instantsearch-dom';
 
-import { NoResults } from '../SearchWidgets';
+import { NoResults } from '../SearchWidgets/NoResults';
 import { css } from '@emotion/react';
+
+// TODO: Remove these stylesheets when styling everything with Spectrum
 import 'instantsearch.css/themes/satellite.css';
 import './index.css';
 import '@spectrum-css/textfield';
 import '@spectrum-css/search';
 import '@spectrum-css/button';
-import { AutoComplete } from './AutoComplete';
-import { createLocalStorageRecentSearchesPlugin } from '@algolia/autocomplete-plugin-recent-searches';
 
-const recentSearchesPlugin = createLocalStorageRecentSearchesPlugin({
-  key: 'adobeio-developer-docs-search'
-});
+import SearchHeader from '../SearchWidgets/SearchHeader';
+import { withPrefix } from 'gatsby';
 
-const APP_ID = process.env.ALGOLIA_APP_ID;
-const SEARCH_KEY = process.env.ALGOLIA_SEARCH_API_KEY;
+// TODO: Replace these with .env variables
 const searchClient = algoliasearch('E642SEDTHL', '36561fc0f6d8f1ecf996bc7bf41af00f');
 
+// This is the same as SearchResults, but richer for page.
 const Hit = ({ hit }) => {
   return (
-    <a className="aa-ItemLink" href={hit.url}>
+    <a className="aa-ItemLink" href={withPrefix(hit.resultUrl)}>
       <div className="aa-ItemContent">
         <div className="aa-ItemContentBody">
-          <div className="aa-ItemContentTitle">
+          <div className="hit-title">
             <Highlight attribute="title" hit={hit} />
           </div>
-          <div className="aa-ItemContentDescription">
+          <div className="hit-full-path">
+            <Highlight attribute="resultUrl" hit={hit} />
+          </div>
+          <div className="hit-description">
             <Snippet hit={hit} attribute="content" />
           </div>
         </div>
@@ -75,12 +74,12 @@ const Hit = ({ hit }) => {
   );
 };
 
-export const SearchPage = (props) => {
+const Search = (props) => {
   const { siteMetadata } = useContext(Context);
 
   return (
     <InstantSearch
-      indexName="search-test"
+      indexName={siteMetadata.searchIndex}
       searchClient={searchClient}
       searchState={props.searchState}
       createURL={props.createURL}
@@ -90,14 +89,14 @@ export const SearchPage = (props) => {
         snippetEllipsisText="…"
         removeWordsIfNoResults="allOptional"
       />
-      <Index indexName="search-test" />
+      <Index indexName={siteMetadata.searchIndex} />
       <SearchHeader />
       <div className="search-results-main">
         <SearchIndexes />
         <hr className="horizontal-line" />
         <SearchStats />
         <div className="search-results">
-          <SearchResults />
+          <SearchMain />
           <hr className="vertical-line" />
           <SearchFilters />
         </div>
@@ -107,76 +106,7 @@ export const SearchPage = (props) => {
   );
 };
 
-const SearchHeader = () => (
-  <header className="search-header ">
-    <div className="search-header-inner">
-      <AutoComplete
-        placeholder="Search..."
-        plugins={[recentSearchesPlugin]}
-        openOnFocus={true}
-        getSources={({ query }) => [
-          {
-            sourceId: 'search-test',
-            getItemUrl({ item }) {
-              return item.url;
-            },
-            getItems() {
-              return getAlgoliaResults({
-                searchClient,
-                queries: [
-                  {
-                    indexName: 'search-test',
-                    query,
-                    params: {
-                      hitsPerPage: 5
-                    }
-                  }
-                  // {
-                  //   indexName: 'illustrator',
-                  //   query,
-                  //   params: {
-                  //     hitsPerPage: 5
-                  //   }
-                  // },
-                  // {
-                  //   indexName: 'xd',
-                  //   query,
-                  //   params: {
-                  //     hitsPerPage: 5
-                  //   }
-                  // }
-                ]
-              });
-            },
-            templates: {
-              item({ item, components }) {
-                return <SearchResult hit={item} components={components} />;
-              }
-            }
-          }
-        ]}
-      />
-      <HitsPerPage
-        items={[
-          {
-            label: '20 hits per page',
-            value: 20
-          },
-          {
-            label: '32 hits per page',
-            value: 40
-          },
-          {
-            label: '64 hits per page',
-            value: 60
-          }
-        ]}
-        defaultRefinement={20}
-      />
-    </div>
-  </header>
-);
-
+// TODO: Wire this up so it actually shows and switches between search indexes
 const SearchIndexes = () => (
   <section className="search-main-indexes">
     <Tabs
@@ -202,10 +132,10 @@ const SearchStats = () => (
   </section>
 );
 
-const SearchResults = () => (
+const SearchMain = () => (
   <section className="search-results">
     <Hits hitComponent={Hit} />
-    <NoResults />
+    {/*<NoResults />*/}
   </section>
 );
 
@@ -224,4 +154,4 @@ const SearchFooter = () => (
   </footer>
 );
 
-export default SearchPage;
+export default Search;

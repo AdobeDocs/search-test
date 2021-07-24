@@ -14,6 +14,7 @@ const AlgoliaHTMLExtractor = require('algolia-html-extractor');
 const htmlExtractor = new AlgoliaHTMLExtractor();
 const { selectAll } = require('unist-util-select');
 const { v4: uuidv4 } = require('uuid');
+// const { getHost } = require('./gitHost');
 
 const createRawRecords = (node, options, fileContent = null) => {
   if (fileContent != null) {
@@ -29,11 +30,12 @@ const createRawRecords = (node, options, fileContent = null) => {
 };
 
 const createAlgoliaRecords = (node, records) => {
-  let { mdxAST, objectID, title, slug, headings, wordCount, ...restNodeFields } = node;
+  let { mdxAST, objectID, title, description, slug, headings, wordCount, ...restNodeFields } = node;
 
   return records.map((record) => ({
     objectID: record.objectID ?? uuidv4(record.value.toString()),
     title: getTitle(node),
+    description: getDescription(node),
     ...restNodeFields,
     // TODO: Rethink getHeadings() and use node.headings instead
     previousHeadings: record.html ? record.headings : getHeadings(node, record),
@@ -42,7 +44,7 @@ const createAlgoliaRecords = (node, records) => {
     slug: slug,
     words: wordCount.words,
     anchor: record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record)),
-    url: getAbsoluteUrl(slug, node, record),
+    resultUrl: getResultUrl(slug, node, record),
     customRanking: record.customRanking ?? '',
     pageID: objectID
   }));
@@ -63,12 +65,29 @@ const getAnchorLink = (linkHeadings) =>
     ?.map((s) => s.toLowerCase())
     .join('-')}`;
 
-const getTitle = (node) => (node.title === '' || node.title == null ? node.headings[0]?.value : node.title);
+function getTitle(node) {
+  if (node.title === '' || node.title == null) {
+    let value = node.headings[0]?.value;
+    return value;
+  } else {
+    return node.title;
+  }
+}
 
-const getAbsoluteUrl = (slug, node, record) => {
+function getDescription(node) {
+  if (node.description === '' || node.description == null) {
+    let value = node.content ?? node.value;
+    console.log(value);
+    return value;
+  } else {
+    return node.description;
+  }
+}
+
+const getResultUrl = (slug, node, record) => {
   let anchor = record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record));
-  console.log(location.hostname);
-  return `https://www.adobe.io${process.env.PATH_PREFIX}${slug}${anchor}`;
+  // TODO: Make domain dynamic
+  return `${slug}${anchor}`;
 };
 
 const removeDuplicateRecords = (records, title) => {
@@ -83,6 +102,6 @@ const removeDuplicateRecords = (records, title) => {
     return !contentExist;
   });
   return records;
-}
+};
 
 module.exports = { createAlgoliaRecords, createRawRecords, removeDuplicateRecords };

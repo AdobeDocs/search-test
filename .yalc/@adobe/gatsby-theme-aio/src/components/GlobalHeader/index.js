@@ -27,7 +27,7 @@ import {
 } from '../../utils';
 import { css } from '@emotion/react';
 import { AnchorButton } from '../AnchorButton';
-import { SearchButton } from '../SearchButton';
+import { SearchButton } from '../SearchWidgets/SearchButton';
 import { Button } from '../Button';
 import { ProgressCircle } from '../ProgressCircle';
 import { Adobe, ChevronDown, TripleGripper } from '../Icons';
@@ -76,18 +76,7 @@ const getAvatar = async (userId) => {
   }
 };
 
-const GlobalHeader = ({
-  ims,
-  isLoadingIms,
-  home,
-  versions,
-  pages,
-  docs,
-  location,
-  toggleSideNav,
-  hasSideNav,
-  github
-}) => {
+const GlobalHeader = ({ ims, isLoadingIms, home, versions, pages, docs, location, toggleSideNav, hasSideNav }) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(getSelectedTabIndex(location, pages));
   const tabsRef = useRef(null);
   const tabsContainerRef = useRef(null);
@@ -701,7 +690,6 @@ const GlobalHeader = ({
                   setOpenProfile((open) => !open);
                 }}
                 // href={withPrefix('/search/')}
-                github={github}
               />
               <Modal
                 ref={searchModalRef}
@@ -854,8 +842,7 @@ GlobalHeader.propTypes = {
   docs: PropTypes.object,
   location: PropTypes.object,
   toggleSideNav: PropTypes.func,
-  hasSideNav: PropTypes.bool,
-  github: PropTypes.object
+  hasSideNav: PropTypes.bool
 };
 
 export { GlobalHeader };

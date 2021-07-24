@@ -1,3 +1,5 @@
+/*TODO: Remove this stylesheet after applying Spectrum styles*/
+
 * {
   box-sizing: border-box;
 }
@@ -17,7 +19,7 @@ mark {
   margin-right: 2.5rem;
 }
 
-/* Search Header */
+/* SearchPage Header */
 .search-header {
   display: block;
   padding: 20px 0;
@@ -31,6 +33,11 @@ mark {
   display: flex;
   margin: 0 auto;
   max-width: 960px;
+  justify-content: space-around;
+}
+
+.search-header-inner > div:first-child {
+  width: calc(9 * 100% / 12);
 }
 
 .ais-SearchBox {
@@ -42,7 +49,8 @@ mark {
 
 .ais-HitsPerPage {
   display: flex;
-  width: 200px;
+  margin-left: 24px;
+  width: calc(2 * 100% / 12);
 }
 
 .ais-SearchBox-input {
@@ -57,7 +65,7 @@ mark {
   padding-left: 2.5rem;
 }
 
-/* Search Main Indexes */
+/* SearchPage Main Indexes */
 .search-main-indexes {
   margin: 0 -0.5rem;
   padding-top: 0.7rem;
