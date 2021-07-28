@@ -1,6 +1,6 @@
 {
   "name": "@adobe/gatsby-theme-aio",
-  "version": "3.14.3",
+  "version": "3.15.0",
   "description": "Gatsby theme for building markdown/gdocs powered Adobe I/O sites",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -117,5 +117,5 @@
     "unist-util-select": "2.0.0",
     "uuid": "^8.3.2"
   },
-  "yalcSig": "53368d908ddaa2a71ff1ff36c40cf48d"
+  "yalcSig": "d6cee982d596fb53781cb42c78c64e15"
 }

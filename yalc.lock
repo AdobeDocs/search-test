@@ -2,8 +2,8 @@
   "version": "v1",
   "packages": {
     "@adobe/gatsby-theme-aio": {
-      "version": "3.14.3",
-      "signature": "53368d908ddaa2a71ff1ff36c40cf48d",
+      "version": "3.15.0",
+      "signature": "d6cee982d596fb53781cb42c78c64e15",
       "file": true
     }
   }

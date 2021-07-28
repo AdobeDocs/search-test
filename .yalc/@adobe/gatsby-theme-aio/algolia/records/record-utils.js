@@ -9,33 +9,31 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 const AlgoliaHTMLExtractor = require('algolia-html-extractor');
 const htmlExtractor = new AlgoliaHTMLExtractor();
 const { selectAll } = require('unist-util-select');
 const { v4: uuidv4 } = require('uuid');
-// const { getHost } = require('./gitHost');
 
-const createRawRecords = (node, options, fileContent = null) => {
+const createRawRecords = ({ mdxAST }, options, fileContent = null) => {
   if (fileContent != null) {
     return htmlExtractor
       .run(fileContent, { cssSelector: options.tagsToIndex })
       .filter((record) => record.content.length >= options.minCharsLengthPerTag);
   } else {
     // https://mdxjs.com/table-of-components
-    return selectAll(options.tagsToIndex, node.mdxAST).filter(
+    return selectAll(options.tagsToIndex, mdxAST).filter(
       (record) => record.value.length >= options.minCharsLengthPerTag
     );
   }
 };
 
 const createAlgoliaRecords = (node, records) => {
-  let { mdxAST, objectID, title, description, slug, headings, wordCount, ...restNodeFields } = node;
+  let { mdxAST, objectID, slug, wordCount, title, description, headings, ...restNodeFields } = node;
 
   return records.map((record) => ({
     objectID: record.objectID ?? uuidv4(record.value.toString()),
-    title: getTitle(node),
-    description: getDescription(node),
+    title: getTitle(title, node, record),
+    description: getDescription(description, node, record),
     ...restNodeFields,
     // TODO: Rethink getHeadings() and use node.headings instead
     previousHeadings: record.html ? record.headings : getHeadings(node, record),
@@ -44,53 +42,62 @@ const createAlgoliaRecords = (node, records) => {
     slug: slug,
     words: wordCount.words,
     anchor: record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record)),
-    resultUrl: getResultUrl(slug, node, record),
+    url: getUrl(slug, node, record),
+    absoluteUrl: getAbsoluteUrl(slug, node, record),
     customRanking: record.customRanking ?? '',
     pageID: objectID
   }));
 };
 
-const getHeadings = (node, record) => {
-  let filteredHeadings = selectAll('heading text', node.mdxAST)
+function getTitle(title, node, record) {
+  if (title === '') {
+    return node.headings[0]?.value ?? '';
+  }
+  if (title == null) {
+    title = node.title = node.headings[0]?.value ?? '';
+    return title;
+  }
+  return title;
+}
+
+function getDescription(description, node, record) {
+  if (description === '') {
+    return record.content ?? record.value ?? '';
+  }
+  if (description == null) {
+    description = node.description = record.content ?? record.value ?? '';
+    return description;
+  }
+  return description;
+}
+
+function getHeadings({ mdxAST }, record) {
+  let filteredHeadings = selectAll('heading text', mdxAST)
     .filter((heading) => heading.position.start.line < record.position.end.line)
     .filter((heading) => heading.value !== 'Request' && heading.value !== 'Response'); // Removes jsdoc code tabs
-  return filteredHeadings.map(({ value }) => value);
-};
+  return filteredHeadings.map((heading) => heading.value);
+}
 
-const getAnchorLink = (linkHeadings) =>
-  `#${linkHeadings
+function getAnchorLink(linkHeadings) {
+  return `#${linkHeadings
     .slice(-1)
     .toString()
     ?.match(/[a-zA-Z]\w+/g)
     ?.map((s) => s.toLowerCase())
     .join('-')}`;
-
-function getTitle(node) {
-  if (node.title === '' || node.title == null) {
-    let value = node.headings[0]?.value;
-    return value;
-  } else {
-    return node.title;
-  }
 }
 
-function getDescription(node) {
-  if (node.description === '' || node.description == null) {
-    let value = node.content ?? node.value;
-    console.log(value);
-    return value;
-  } else {
-    return node.description;
-  }
-}
-
-const getResultUrl = (slug, node, record) => {
+function getUrl(slug, node, record) {
   let anchor = record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record));
-  // TODO: Make domain dynamic
-  return `${slug}${anchor}`;
-};
+  return `${process.env.PATH_PREFIX}${slug}${anchor}`;
+}
 
-const removeDuplicateRecords = (records, title) => {
+function getAbsoluteUrl(slug, node, record) {
+  let anchor = record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record));
+  return `${process.env.AIO_FASTLY_DEV_URL}${process.env.PATH_PREFIX}${slug}${anchor}`;
+}
+
+const removeDuplicateRecords = (records) => {
   let uniqueContents = [];
 
   records = records.filter((record) => {

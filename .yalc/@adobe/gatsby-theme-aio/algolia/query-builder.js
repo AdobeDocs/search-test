@@ -36,10 +36,6 @@ class QueryBuilder {
       {
         query: `
         {
-          site {
-            host
-            port
-          }
           allFile(
             filter: {absolutePath: {regex: "/${sourceDir}/"}, internal: {mediaType: {in: ["text/markdown", "text/mdx", "text/x-markdown"]}}}
           ) {
@@ -57,6 +53,7 @@ class QueryBuilder {
                     title
                     description
                     contributors
+                    product
                     keywords
                     openAPISpec
                     frameSrc
@@ -76,14 +73,13 @@ class QueryBuilder {
         }
       `,
         settings: {
-          searchableAttributes: ['title', 'contentHeading', 'unordered(description)', 'unordered(content)'],
+          searchableAttributes: ['title', 'contentHeading', 'description,content'],
           // TODO: Comment out the ranking override to let Algolia's default determine it. Investigate more.
           // ranking: ['words', 'typo', 'proximity', 'attribute', 'exact', 'geo', 'filters'],
           customRanking: ['desc(ctimeMs)'],
-          attributesForFaceting: ['searchable(keywords)'],
+          attributesForFaceting: ['searchable(keywords)', 'filterOnly(product)'],
           attributesToSnippet: ['content:55', 'description:55'],
           snippetEllipsisText: '…',
-          attributesToHighlight: ['*'],
           distinct: true,
           attributeForDistinct: 'pageID',
           highlightPreTag: '<mark class="ais-Highlight">',
@@ -96,7 +92,8 @@ class QueryBuilder {
           typoTolerance: true,
           allowTyposOnNumericTokens: true,
           minProximity: 1,
-          responseFields: ['*']
+          responseFields: ['*'],
+          advancedSyntax: true
         },
         transformer: async function ({
           data: {
@@ -171,7 +168,7 @@ class QueryBuilder {
     records = records.map(({ mdxAST, fileAbsolutePath, frameSrc, openAPISpec, ...keepAttrs }) => keepAttrs);
     records = removeDuplicateRecords(records);
 
-    console.log(records.length + ' records for "' + (node.title.length ? node.title : node.objectID) + '"');
+    console.log(records.length + ' records for "' + (node.title?.length ? node.title : node.objectID) + '"');
     return records;
   }
 }

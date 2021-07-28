@@ -61,11 +61,6 @@ exports.createSchemaCustomization = ({ actions }) => {
       hidden: Boolean
     }
 
-    type Site {
-      host: String
-      port: String
-    }
-
     type SiteSiteMetadata {
       home: Home
       pages: [TopPage]
@@ -73,6 +68,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       versions: [Version]
       docs: Link
       searchIndex: String
+      pathPrefix: String
     }
 
     type SubPage {
@@ -119,6 +115,14 @@ exports.createSchemaCustomization = ({ actions }) => {
 exports.createResolvers = ({ createResolvers, addFrontmatterType }) => {
   const resolvers = {
     MdxFrontmatter: {
+      title: {
+        type: 'String',
+        resolve: addFrontmatterType
+      },
+      product: {
+        type: 'String',
+        resolve: addFrontmatterType
+      },
       keywords: {
         type: '[String]',
         resolve: addFrontmatterType
