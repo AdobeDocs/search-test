@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@adobe/gatsby-theme-aio": "file:.yalc/@adobe/gatsby-theme-aio",
+    "uxp-documentation": "github:adobedocs/uxp",
     "gatsby": "^3.6.0",
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
