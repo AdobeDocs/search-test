@@ -1,0 +1,54 @@
+{
+  "_from": "github:adobedocs/uxp",
+  "_id": "uxp-documentation@0.0.17",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/uxp-documentation",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "uxp-documentation@github:adobedocs/uxp",
+    "name": "uxp-documentation",
+    "escapedName": "uxp-documentation",
+    "rawSpec": "github:adobedocs/uxp",
+    "saveSpec": "github:adobedocs/uxp",
+    "fetchSpec": null,
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "github:adobedocs/uxp#2344d1eeb3e7b5797922e89cee70324094bd5b53",
+  "_spec": "uxp-documentation@github:adobedocs/uxp",
+  "_where": "/Users/timk/repo/adobe-docs/search-test",
+  "bugs": {
+    "url": "https://github.com/AdobeDocs/uxp/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "homepage": "https://github.com/AdobeDocs/uxp#readme",
+  "license": "Apache-2.0",
+  "name": "uxp-documentation",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdobeDocs/uxp.git"
+  },
+  "scripts": {
+    "copy-assets": "npm run copy-spectrum-assets && npm run copy-spectrum-assets-transclusions && npm run copy-html-assets && npm run copy-html-assets-transclusions",
+    "copy-docs": "npm run copy-docs-js && npm run copy-docs-css && npm run copy-docs-html && npm run copy-docs-spectrum",
+    "copy-docs-css": ". .env && rm -rf src/pages/uxp/reference-css      && mkdir -p src/pages/uxp/reference-css      && cp -r \"$UXP_REPO_SOURCE\"/uxp/reference-css      src/pages/uxp/ && mv src/pages/uxp/reference-css/reference-css.js reference-css.js",
+    "copy-docs-html": ". .env && rm -rf src/pages/uxp/reference-html     && mkdir -p src/pages/uxp/reference-html     && cp -r \"$UXP_REPO_SOURCE\"/uxp/reference-html     src/pages/uxp/ && mv src/pages/uxp/reference-html/reference-html.js reference-html.js",
+    "copy-docs-js": ". .env && rm -rf src/pages/uxp/reference-js       && mkdir -p src/pages/uxp/reference-js       && cp -r \"$UXP_REPO_SOURCE\"/uxp/reference-js       src/pages/uxp/ && mv src/pages/uxp/reference-js/reference-js.js reference-js.js",
+    "copy-docs-spectrum": ". .env && rm -rf src/pages/uxp/reference-spectrum && mkdir -p src/pages/uxp/reference-spectrum && cp -r \"$UXP_REPO_SOURCE\"/uxp/reference-spectrum src/pages/uxp/ && mv src/pages/uxp/reference-spectrum/reference-spectrum.js reference-spectrum.js",
+    "copy-html-assets": ". .env && cp -r \"$UXP_REPO_SOURCE_DOCS\"/reference-html/assets ./src/pages/uxp/reference-html/",
+    "copy-html-assets-transclusions": ". .env && cp -r \"$UXP_REPO_SOURCE_DOCS\"/reference-html/assets ./_transclusions/photoshop/uxp/reference-html/",
+    "copy-spectrum-assets": ". .env && cp -r \"$UXP_REPO_SOURCE_DOCS\"/reference-spectrum/assets ./src/pages/uxp/reference-spectrum/",
+    "copy-spectrum-assets-transclusions": ". .env && cp -r \"$UXP_REPO_SOURCE_DOCS\"/reference-spectrum/assets ./_transclusions/photoshop/uxp/reference-spectrum/",
+    "copy-transclusions": ". .env && rm -rf ./_transclusions && mkdir ./_transclusions && cp -r \"$UXP_REPO_SOURCE\"/_transclusions .",
+    "postbuild": "touch public/.nojekyll",
+    "prebuild": "npm run copy-docs && npm run copy-transclusions && npm run copy-assets",
+    "predev": "npm run copy-docs && npm run copy-transclusions && npm run copy-assets"
+  },
+  "version": "0.0.17"
+}
