@@ -94,13 +94,17 @@ const SearchIndexes = (props) => {
   docIndexes.push({
     indexName: props.indexName
   });
-
+  docIndexes.push({
+    indexName: 'creative-cloud'
+  });
   docIndexes.push({
     indexName: 'photoshop'
   });
-
   docIndexes.push({
-    indexName: 'creative-cloud'
+    indexName: 'project-firefly'
+  });
+  docIndexes.push({
+    indexName: 'xd'
   });
 
   return (
@@ -141,7 +145,7 @@ const SearchIndexes = (props) => {
                   });
                   positionSelectedTabIndicator(index);
                 }}>
-                <TabsItemLabel>{docIndex.indexName}</TabsItemLabel>
+                <TabsItemLabel>{docIndex.indexName.toUpperCase()}</TabsItemLabel>
               </TabsItem>
             );
           })}
