@@ -12,7 +12,7 @@
 
 import React, { useRef, useEffect, useState, createRef } from 'react';
 import { css } from '@emotion/react';
-import PropTypes from 'prop-types';
+import { ADOBEIO_ALGOLGIA_INDEXES } from '../../../../conf/globals';
 import { Tabs, Item as TabsItem, Label as TabsItemLabel, TabsIndicator, positionIndicator } from '../../Tabs';
 import {
   Configure,
@@ -51,7 +51,7 @@ const SearchIndexes = (props) => {
   const Hit = ({ hit }) => {
     return (
       <div>
-        <a className="hit-title" href={withPrefix(hit.slug + hit.anchor)}>
+        <a className="hit-title" href={hit.absoluteUrl}>
           <Highlight attribute="title" hit={hit} />
         </a>
         <p className="hit-full-path">{hit.url}</p>
@@ -91,20 +91,17 @@ const SearchIndexes = (props) => {
 
   let docIndexes = [];
 
-  docIndexes.push({
-    indexName: props.indexName
-  });
-  docIndexes.push({
-    indexName: 'creative-cloud'
-  });
-  docIndexes.push({
-    indexName: 'photoshop'
-  });
-  docIndexes.push({
-    indexName: 'project-firefly'
-  });
-  docIndexes.push({
-    indexName: 'xd'
+  // Add current site's index as default, followed by sibling indexes
+  ADOBEIO_ALGOLGIA_INDEXES.map((indexName, i) => {
+    if (indexName === props?.indexName) {
+      docIndexes.unshift({ indexName: props.indexName });
+    } else {
+      if (props?.indexName) {
+        docIndexes.push({
+          indexName: props.indexName
+        });
+      }
+    }
   });
 
   return (
@@ -144,8 +141,9 @@ const SearchIndexes = (props) => {
                     tab: index
                   });
                   positionSelectedTabIndicator(index);
+                  console.log(docIndex);
                 }}>
-                <TabsItemLabel>{docIndex.indexName.toUpperCase()}</TabsItemLabel>
+                <TabsItemLabel>{docIndex.indexName}</TabsItemLabel>
               </TabsItem>
             );
           })}

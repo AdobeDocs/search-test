@@ -14,42 +14,44 @@ const htmlExtractor = new AlgoliaHTMLExtractor();
 const { selectAll } = require('unist-util-select');
 const { v4: uuidv4 } = require('uuid');
 
-const createRawRecords = ({ mdxAST }, options, fileContent = null) => {
+const createRawRecords = (node, options, fileContent = null) => {
   if (fileContent != null) {
     return htmlExtractor
       .run(fileContent, { cssSelector: options.tagsToIndex })
       .filter((record) => record.content.length >= options.minCharsLengthPerTag);
   } else {
     // https://mdxjs.com/table-of-components
-    return selectAll(options.tagsToIndex, mdxAST).filter(
+    return selectAll(options.tagsToIndex, node.mdxAST).filter(
       (record) => record.value.length >= options.minCharsLengthPerTag
     );
   }
 };
 
 const createAlgoliaRecords = (node, records) => {
-  let { mdxAST, objectID, slug, wordCount, title, description, headings, ...restNodeFields } = node;
+  let { mdxAST, slug, objectID, contentDigest, wordCount, title, description, headings, ...restNodeFields } = node;
 
-  return records.map((record) => ({
-    objectID: record.objectID ?? uuidv4(record.value.toString()),
-    title: getTitle(title, node, record),
-    description: getDescription(description, node, record),
-    ...restNodeFields,
-    // TODO: Rethink getHeadings() and use node.headings instead
-    previousHeadings: record.html ? record.headings : getHeadings(node, record),
-    contentHeading: record.html ? record.headings.slice(-1)[0] : getHeadings(node, record).slice(-1)[0],
-    content: record.content ?? record.value,
-    slug: slug,
-    words: wordCount.words,
-    anchor: record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record)),
-    url: getUrl(slug, node, record),
-    absoluteUrl: getAbsoluteUrl(slug, node, record),
-    customRanking: record.customRanking ?? '',
-    pageID: objectID
-  }));
+  return records.map((record) => {
+    return {
+      objectID: record.objectID ?? objectID,
+      contentDigest: record.objectID ?? contentDigest,
+      title: getTitle(title, node, record),
+      description: getDescription(description, node, record),
+      ...restNodeFields,
+      // TODO: Rethink getHeadings() and use node.headings instead
+      previousHeadings: record.html ? record.headings : getHeadings(node, record),
+      contentHeading: record.html ? record.headings.slice(-1)[0] : getHeadings(node, record).slice(-1)[0],
+      content: record.content ?? record.value,
+      slug: slug,
+      words: wordCount.words,
+      anchor: record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record)),
+      url: getUrl(slug, node, record),
+      absoluteUrl: getAbsoluteUrl(slug, node, record),
+      customRanking: record.customRanking ?? ''
+    };
+  });
 };
 
-function getTitle(title, node, record) {
+function getTitle(title, node) {
   if (title === '') {
     return node.headings[0]?.value ?? '';
   }
@@ -94,19 +96,18 @@ function getUrl(slug, node, record) {
 
 function getAbsoluteUrl(slug, node, record) {
   let anchor = record.html ? getAnchorLink(record.headings) : getAnchorLink(getHeadings(node, record));
-  return `${process.env.AIO_FASTLY_DEV_URL}${process.env.PATH_PREFIX}${slug}${anchor}`;
+  return `${process.env.AIO_FASTLY_PROD_URL}${process.env.PATH_PREFIX}${slug}${anchor}`;
 }
 
 const removeDuplicateRecords = (records) => {
   let uniqueContents = [];
-
   records = records.filter((record) => {
-    let contentExist = true;
-    if (!uniqueContents.includes(record.content)) {
+    if (uniqueContents.includes(record.content)) {
+      return false;
+    } else {
       uniqueContents.push(record.content);
-      contentExist = false;
+      return true;
     }
-    return !contentExist;
   });
   return records;
 };

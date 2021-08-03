@@ -41,7 +41,6 @@ class QueryBuilder {
           ) {
             edges {
               node {
-                ctimeMs
                 modifiedTime(fromNow: true)
                 size
                 prettySize
@@ -66,6 +65,9 @@ class QueryBuilder {
                   }
                   slug
                   mdxAST
+                  internal {
+                    contentDigest
+                  }
                 }
               }
             }
@@ -76,7 +78,6 @@ class QueryBuilder {
           searchableAttributes: ['title', 'contentHeading', 'description,content'],
           // TODO: Comment out the ranking override to let Algolia's default determine it. Investigate more.
           // ranking: ['words', 'typo', 'proximity', 'attribute', 'exact', 'geo', 'filters'],
-          customRanking: ['desc(ctimeMs)'],
           attributesForFaceting: ['searchable(keywords)', 'filterOnly(product)'],
           attributesToSnippet: ['content:55', 'description:55'],
           snippetEllipsisText: '…',
@@ -104,11 +105,12 @@ class QueryBuilder {
             .map((edge) => edge.node)
             .map((node) => {
               const { childMdx, ...restFileFields } = node;
-              const { frontmatter, ...restMdxFields } = childMdx;
+              const { frontmatter, internal, ...restMdxFields } = childMdx;
 
               return {
                 ...restFileFields,
                 ...childMdx.frontmatter,
+                ...childMdx.internal,
                 ...restMdxFields
               };
             });
@@ -167,8 +169,8 @@ class QueryBuilder {
 
     records = records.map(({ mdxAST, fileAbsolutePath, frameSrc, openAPISpec, ...keepAttrs }) => keepAttrs);
     records = removeDuplicateRecords(records);
+    console.log(`${records.length} records for ${records[0]?.title === '' ? node.pageID : records[0]?.title}`);
 
-    console.log(records.length + ' records for "' + (node.title?.length ? node.title : node.objectID) + '"');
     return records;
   }
 }
