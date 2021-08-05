@@ -74,28 +74,6 @@ class QueryBuilder {
           }
         }
       `,
-        settings: {
-          searchableAttributes: ['title', 'contentHeading', 'description,content'],
-          // TODO: Comment out the ranking override to let Algolia's default determine it. Investigate more.
-          // ranking: ['words', 'typo', 'proximity', 'attribute', 'exact', 'geo', 'filters'],
-          attributesForFaceting: ['searchable(keywords)', 'filterOnly(product)'],
-          attributesToSnippet: ['content:55', 'description:55'],
-          snippetEllipsisText: '…',
-          distinct: true,
-          attributeForDistinct: 'pageID',
-          highlightPreTag: '<mark class="ais-Highlight">',
-          highlightPostTag: '</mark>',
-          hitsPerPage: 20,
-          ignorePlurals: true,
-          restrictHighlightAndSnippetArrays: false,
-          minWordSizefor1Typo: 4,
-          minWordSizefor2Typos: 8,
-          typoTolerance: true,
-          allowTyposOnNumericTokens: true,
-          minProximity: 1,
-          responseFields: ['*'],
-          advancedSyntax: true
-        },
         transformer: async function ({
           data: {
             allFile: { edges }
@@ -169,7 +147,7 @@ class QueryBuilder {
 
     records = records.map(({ mdxAST, fileAbsolutePath, frameSrc, openAPISpec, ...keepAttrs }) => keepAttrs);
     records = removeDuplicateRecords(records);
-    console.log(`${records.length} records for ${records[0]?.title === '' ? node.pageID : records[0]?.title}`);
+    console.log(`${records.length} records for ${records[0]?.title === '' ? node.url : records[0]?.title}`);
 
     return records;
   }

@@ -12,7 +12,6 @@
 const AlgoliaHTMLExtractor = require('algolia-html-extractor');
 const htmlExtractor = new AlgoliaHTMLExtractor();
 const { selectAll } = require('unist-util-select');
-const { v4: uuidv4 } = require('uuid');
 
 const createRawRecords = (node, options, fileContent = null) => {
   if (fileContent != null) {
@@ -31,9 +30,8 @@ const createAlgoliaRecords = (node, records) => {
   let { mdxAST, slug, objectID, contentDigest, wordCount, title, description, headings, ...restNodeFields } = node;
 
   return records.map((record) => {
-    return {
+    const algoliaRecord = {
       objectID: record.objectID ?? objectID,
-      contentDigest: record.objectID ?? contentDigest,
       title: getTitle(title, node, record),
       description: getDescription(description, node, record),
       ...restNodeFields,
@@ -48,6 +46,20 @@ const createAlgoliaRecords = (node, records) => {
       absoluteUrl: getAbsoluteUrl(slug, node, record),
       customRanking: record.customRanking ?? ''
     };
+
+    const regex = /\//g;
+    const pathPrefixAttribute = process.env.PATH_PREFIX.replace(regex, '');
+
+    // record[pathPrefixAttribute] = record.objectID ?? contentDigest;
+
+    Object.defineProperty(algoliaRecord, pathPrefixAttribute, {
+      value: record.objectID ?? contentDigest,
+      writable: true,
+      enumerable: true,
+      configurable: true
+    });
+
+    return algoliaRecord;
   });
 };
 
