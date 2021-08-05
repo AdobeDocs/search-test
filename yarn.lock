@@ -32,7 +32,7 @@
     globby "^11.0.1"
     graphql-fetch "^1.0.1"
 
-"@adobe/gatsby-theme-aio@^3.15.0":
+"@adobe/gatsby-theme-aio@@adobe/gatsby-theme-aio@3.15.0#search_ui":
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/@adobe/gatsby-theme-aio/-/gatsby-theme-aio-3.15.0.tgz#0cbba87f8feb810fcc21aa16d25ee36f5a4a21e2"
   integrity sha512-tcfKkTqResJlb0hmQp7Nlnl3BUokD81A+WldlH0Lh/n0OVCS1HsyIwxhKb2aJlrWbl/OTViWLI4l7oZpk5g2IA==
